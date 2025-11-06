@@ -29,6 +29,28 @@ const Sidebar = () => {
           <span>🎓</span>
           <span className="menu-text hidden lg:inline">Mahasiswa</span>
         </NavLink>
+        <NavLink
+          to="/admin/transfer"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded ${
+              isActive ? "bg-blue-700" : "hover:bg-blue-700"
+            }`
+          }
+        >
+          <span>💸</span>
+          <span className="menu-text hidden lg:inline">Transfer</span>
+        </NavLink>
+        <NavLink
+          to="/admin/transfer/daftartransaksi"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded ${
+              isActive ? "bg-blue-700" : "hover:bg-blue-700"
+            }`
+          }
+        >
+          <span>📜</span>
+          <span className="menu-text hidden lg:inline">Daftar Transaksi</span>
+        </NavLink>
       </nav>
     </aside>
   );

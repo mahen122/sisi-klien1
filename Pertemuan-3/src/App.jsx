@@ -10,6 +10,8 @@ import Login from "@/Pages/Auth/Login";
 import Dashboard from "@/Pages/Admin/Dashboard";
 import Mahasiswa from "@/Pages/Admin/Mahasiswa";
 import MahasiswaDetail from "@/Pages/Admin/MahasiswaDetail";
+import Transfer from "@/Pages/Admin/Transfer";
+import DaftarTransaksi from "@/Pages/Admin/DaftarTransaksi";
 import PageNotFound from "@/Pages/PageNotFound";
 
 // 🔹 Layouts
@@ -53,6 +55,14 @@ const router = createBrowserRouter([
       {
       path: "dashboard",      
       element: <Dashboard />,
+      },
+      {
+        path: "transfer",
+        element: <Transfer />,
+      },
+      {
+        path: "transfer/daftartransaksi",
+        element: <DaftarTransaksi />,
       },
       {
         path: "mahasiswa",

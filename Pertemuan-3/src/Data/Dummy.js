@@ -8,15 +8,15 @@ export const dummyUser = {
 // Dummy data mahasiswa
 export const mahasiswaList = [
   {
-    nim: "A11.2022.14655",
-    nama: "Nauval Sutisna",
+    nim: "A11.2022.14638",
+    nama: "Mahendra Setiawan",
   },
   {
-    nim: "20211002",
-    nama: "Siti Aminah",
+    nim: "A11.2022.11111",
+    nama: "Abi zalud",
   },
   {
-    nim: "20211003",
-    nama: "Ahmad Fauzi",
+    nim: "A11.2022.22222",
+    nama: "Mafa mahen ",
   },
 ];
