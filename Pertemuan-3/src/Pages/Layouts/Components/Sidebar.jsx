@@ -30,6 +30,61 @@ const Sidebar = () => {
           <span className="menu-text hidden lg:inline">Mahasiswa</span>
         </NavLink>
         <NavLink
+          to="/admin/users"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded ${
+              isActive ? "bg-blue-700" : "hover:bg-blue-700"
+            }`
+          }
+        >
+          <span>🧑‍💼</span>
+          <span className="menu-text hidden lg:inline">User</span>
+        </NavLink>
+        <NavLink
+          to="/admin/dosen"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded ${
+              isActive ? "bg-blue-700" : "hover:bg-blue-700"
+            }`
+          }
+        >
+          <span>👩‍🏫</span>
+          <span className="menu-text hidden lg:inline">Dosen</span>
+        </NavLink>
+        <NavLink
+          to="/admin/mata-kuliah"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded ${
+              isActive ? "bg-blue-700" : "hover:bg-blue-700"
+            }`
+          }
+        >
+          <span>📚</span>
+          <span className="menu-text hidden lg:inline">Mata Kuliah</span>
+        </NavLink>
+        <NavLink
+          to="/admin/kelas"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded ${
+              isActive ? "bg-blue-700" : "hover:bg-blue-700"
+            }`
+          }
+        >
+          <span>🏫</span>
+          <span className="menu-text hidden lg:inline">Kelas</span>
+        </NavLink>
+        <NavLink
+          to="/admin/mahasiswa-sks"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded ${
+              isActive ? "bg-blue-700" : "hover:bg-blue-700"
+            }`
+          }
+        >
+          <span>📊</span>
+          <span className="menu-text hidden lg:inline">SKS Mahasiswa</span>
+        </NavLink>
+        <NavLink
           to="/admin/transfer"
           className={({ isActive }) =>
             `flex items-center space-x-2 px-4 py-2 rounded ${

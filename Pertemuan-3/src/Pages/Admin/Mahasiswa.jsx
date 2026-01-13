@@ -1,19 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Card from "@/Pages/Layouts/Components/Card";
 import Heading from "@/Pages/Layouts/Components/Heading";
 import Button from "@/Pages/Layouts/Components/Button";
-import { mahasiswaList } from "@/Data/Dummy";
+import Pagination from "@/Pages/Layouts/Components/Pagination";
 import { useNavigate } from "react-router-dom";
 import ModalMahasiswa from "./ModalMahasiswa";
 import TableMahasiswa from "./TableMahasiswa";
 import { toastSuccess, toastError } from "@/Pages/Layouts/Utils/Helpers/ToastHelpers";
 import { confirmDelete, confirmUpdate } from "@/Pages/Layouts/Utils/Helpers/SwalHelpers";
+import {
+  useMahasiswaList,
+  useCreateMahasiswa,
+  useUpdateMahasiswa,
+  useDeleteMahasiswa,
+} from "@/Pages/Layouts/Utils/Hooks/useMahasiswa";
 
 const Mahasiswa = () => {
   const navigate = useNavigate();
 
-  // Data Mahasiswa
-  const [mahasiswa, setMahasiswa] = useState([]);
+  const { data: mahasiswa = [], isLoading } = useMahasiswaList();
+  const createMutation = useCreateMahasiswa();
+  const updateMutation = useUpdateMahasiswa();
+  const deleteMutation = useDeleteMahasiswa();
 
   // State Modal dan Form
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,40 +29,28 @@ const Mahasiswa = () => {
   const [form, setForm] = useState({ nim: "", nama: "" });
   const [originalNim, setOriginalNim] = useState(null);
 
-  // useEffect
-  useEffect(() => {
-    setTimeout(() => fetchMahasiswa(), 500); // simulasi loading
-  }, []);
-
-  const fetchMahasiswa = async () => {
-    // simulasi fetch API
-    setMahasiswa(mahasiswaList);
-  };
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(mahasiswa.length / itemsPerPage);
+  const paginatedData = mahasiswa.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   // Handle input form
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Tambah data mahasiswa baru
-  const addMahasiswa = (newData) => {
-    setMahasiswa([...mahasiswa, newData]);
-  };
-
-  // Update data mahasiswa
-  const updateMahasiswa = (nim, newData) => {
-    const updated = mahasiswa.map((mhs) =>
-      mhs.nim === nim ? { ...mhs, ...newData } : mhs
-    );
-    setMahasiswa(updated);
-  };
-
-  // Hapus data mahasiswa
-  const deleteMahasiswa = (nim) => {
-    confirmDelete(() => {
-      const filtered = mahasiswa.filter((mhs) => mhs.nim !== nim);
-      setMahasiswa(filtered);
-      toastSuccess("Data berhasil dihapus");
+  const handleDelete = (nim) => {
+    confirmDelete(async () => {
+      try {
+        await deleteMutation.mutateAsync(nim);
+        toastSuccess("Data berhasil dihapus");
+      } catch (err) {
+        toastError(err.response?.data?.message || "Gagal menghapus mahasiswa");
+      }
     });
   };
 
@@ -73,8 +69,15 @@ const Mahasiswa = () => {
     setIsModalOpen(true);
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setIsEdit(false);
+    setOriginalNim(null);
+    setForm({ nim: "", nama: "" });
+  };
+
   // Submit form
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!form.nim.trim() || !form.nama.trim()) {
@@ -83,35 +86,30 @@ const Mahasiswa = () => {
     }
 
     if (isEdit) {
-      // 🔹 Gunakan konfirmasi sebelum update
       confirmUpdate(() => {
-        updateMahasiswa(originalNim, form);
-        toastSuccess("Data berhasil diperbarui");
-        closeModal();
+        updateMutation
+          .mutateAsync({ id: originalNim, payload: form })
+          .then(() => {
+            toastSuccess("Data berhasil diperbarui");
+            closeModal();
+          })
+          .catch((err) => toastError(err.response?.data?.message || "Gagal memperbarui mahasiswa"));
       });
       
     } else {
-      const exists = mahasiswa.some((mhs) => mhs.nim === form.nim);
-      if (exists) {
-        alert("NIM sudah terdaftar!");
+      try {
+        await createMutation.mutateAsync(form);
+        toastSuccess("Data berhasil ditambahkan");
+      } catch (err) {
+        toastError(err.response?.data?.message || "Gagal menambah mahasiswa");
         return;
       }
-      addMahasiswa(form);
-      // alert("Data berhasil ditambahkan!");
-      toastSuccess("Data berhasil ditambahkan");
     }
 
     setForm({ nim: "", nama: "" });
     setIsEdit(false);
     setIsModalOpen(false);
     setOriginalNim(null);
-  };
-
-  // Modal Tambah/Edit
-  const openAddModal = () => {
-    setIsModalOpen(true);
-    setForm({ nim: "", nama: "" });
-    setIsEdit(false);
   };
 
   return (
@@ -121,15 +119,26 @@ const Mahasiswa = () => {
           <Heading as="h2" className="mb-0 text-left">
             Daftar Mahasiswa
           </Heading>
-          <Button onClick={openAddModal}>+ Tambah Mahasiswa</Button>
+          <Button onClick={handleAdd}>+ Tambah Mahasiswa</Button>
         </div>
 
         <TableMahasiswa
-          data={mahasiswa}
+          data={paginatedData}
+          loading={isLoading}
           onEdit={handleEdit}
-          onDelete={deleteMahasiswa}
+          onDelete={handleDelete}
           onDetail={(nim) => navigate(`/admin/mahasiswa/${nim}`)}
         />
+
+        {!isLoading && mahasiswa.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            itemsPerPage={itemsPerPage}
+            totalItems={mahasiswa.length}
+          />
+        )}
       </Card>
 
       <ModalMahasiswa
@@ -137,7 +146,7 @@ const Mahasiswa = () => {
         isEdit={isEdit}
         form={form}
         onChange={handleChange}
-        onClose={() => setIsModalOpen(false)}
+        onClose={closeModal}
         onSubmit={handleSubmit}
       />
     </>

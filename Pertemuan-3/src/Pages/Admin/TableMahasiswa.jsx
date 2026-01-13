@@ -1,6 +1,14 @@
 import Button from "@/Pages/Layouts/Components/Button";
 
-const TableMahasiswa = ({ data = [], onEdit, onDelete, onDetail }) => {
+const TableMahasiswa = ({ data = [], onEdit, onDelete, onDetail, loading }) => {
+  if (loading) {
+    return <div className="py-4 text-sm text-gray-600">Memuat data mahasiswa...</div>;
+  }
+
+  if (!data || data.length === 0) {
+    return <div className="py-4 text-sm text-gray-600">Belum ada data mahasiswa.</div>;
+  }
+
   return (
     <table className="w-full text-sm text-gray-700">
       <thead className="bg-blue-600 text-white">

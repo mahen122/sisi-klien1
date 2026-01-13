@@ -1,17 +1,18 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import Card from "@/Pages/Layouts/Components/Card";
 import Heading from "@/Pages/Layouts/Components/Heading";
-
-import { mahasiswaList } from "@/Data/Dummy";
+import { useMahasiswaDetail } from "@/Pages/Layouts/Utils/Hooks/useMahasiswa";
 
 const MahasiswaDetail = () => {
+  const { nim } = useParams();
+  const { data, isLoading, isError } = useMahasiswaDetail(nim);
 
-  const path = window.location.pathname;
-  const nim = path.split("/").pop();
+  if (isLoading) {
+    return <p className="text-gray-600">Memuat detail...</p>;
+  }
 
-  const mahasiswa = mahasiswaList.find((m) => m.nim === nim);
-
-  if (!mahasiswa) {
+  if (isError || !data) {
     return <p className="text-red-600">Data mahasiswa tidak ditemukan.</p>;
   }
 
@@ -22,12 +23,18 @@ const MahasiswaDetail = () => {
         <tbody>
           <tr>
             <td className="py-2 px-4 font-medium">NIM</td>
-            <td className="py-2 px-4">{mahasiswa.nim}</td>
+            <td className="py-2 px-4">{data.nim}</td>
           </tr>
           <tr>
             <td className="py-2 px-4 font-medium">Nama</td>
-            <td className="py-2 px-4">{mahasiswa.nama}</td>
+            <td className="py-2 px-4">{data.nama}</td>
           </tr>
+          {data.prodi ? (
+            <tr>
+              <td className="py-2 px-4 font-medium">Prodi</td>
+              <td className="py-2 px-4">{data.prodi}</td>
+            </tr>
+          ) : null}
         </tbody>
       </table>
     </Card>
