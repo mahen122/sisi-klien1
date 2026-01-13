@@ -155,12 +155,6 @@ const Dashboard = () => {
           </PieChart>
         </ResponsiveContainer>
       </Card>
-
-      <div className="mt-4">
-        <Link to="/admin/transfer">
-          <Button variant="primary">Ke Halaman Transfer</Button>
-        </Link>
-      </div>
     </div>
   );
 };

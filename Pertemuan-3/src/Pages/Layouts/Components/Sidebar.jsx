@@ -7,6 +7,9 @@ const Sidebar = () => {
         <span className="text-2xl font-bold hidden lg:block">Admin</span>
       </div>
       <nav className="p-4 space-y-2">
+        {/* Master Data Section */}
+        <div className="text-xs font-semibold text-blue-300 px-4 py-2 uppercase tracking-wide">Master Data</div>
+        
         <NavLink
           to="/admin/dashboard"
           className={({ isActive }) =>
@@ -18,28 +21,7 @@ const Sidebar = () => {
           <span>🏠</span>
           <span className="menu-text hidden lg:inline">Dashboard</span>
         </NavLink>
-        <NavLink
-          to="/admin/mahasiswa"
-          className={({ isActive }) =>
-            `flex items-center space-x-2 px-4 py-2 rounded ${
-              isActive ? "bg-blue-700" : "hover:bg-blue-700"
-            }`
-          }
-        >
-          <span>🎓</span>
-          <span className="menu-text hidden lg:inline">Mahasiswa</span>
-        </NavLink>
-        <NavLink
-          to="/admin/users"
-          className={({ isActive }) =>
-            `flex items-center space-x-2 px-4 py-2 rounded ${
-              isActive ? "bg-blue-700" : "hover:bg-blue-700"
-            }`
-          }
-        >
-          <span>🧑‍💼</span>
-          <span className="menu-text hidden lg:inline">User</span>
-        </NavLink>
+
         <NavLink
           to="/admin/dosen"
           className={({ isActive }) =>
@@ -51,6 +33,7 @@ const Sidebar = () => {
           <span>👩‍🏫</span>
           <span className="menu-text hidden lg:inline">Dosen</span>
         </NavLink>
+
         <NavLink
           to="/admin/mata-kuliah"
           className={({ isActive }) =>
@@ -62,6 +45,7 @@ const Sidebar = () => {
           <span>📚</span>
           <span className="menu-text hidden lg:inline">Mata Kuliah</span>
         </NavLink>
+
         <NavLink
           to="/admin/kelas"
           className={({ isActive }) =>
@@ -73,6 +57,22 @@ const Sidebar = () => {
           <span>🏫</span>
           <span className="menu-text hidden lg:inline">Kelas</span>
         </NavLink>
+
+        <NavLink
+          to="/admin/mahasiswa"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded ${
+              isActive ? "bg-blue-700" : "hover:bg-blue-700"
+            }`
+          }
+        >
+          <span>🎓</span>
+          <span className="menu-text hidden lg:inline">Mahasiswa</span>
+        </NavLink>
+
+        {/* Tracking & Reports Section */}
+        <div className="text-xs font-semibold text-blue-300 px-4 py-2 uppercase tracking-wide">Tracking</div>
+
         <NavLink
           to="/admin/mahasiswa-sks"
           className={({ isActive }) =>
@@ -84,6 +84,25 @@ const Sidebar = () => {
           <span>📊</span>
           <span className="menu-text hidden lg:inline">SKS Mahasiswa</span>
         </NavLink>
+
+        {/* System Section */}
+        <div className="text-xs font-semibold text-blue-300 px-4 py-2 uppercase tracking-wide">Sistem</div>
+
+        <NavLink
+          to="/admin/users"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded ${
+              isActive ? "bg-blue-700" : "hover:bg-blue-700"
+            }`
+          }
+        >
+          <span>🧑‍💼</span>
+          <span className="menu-text hidden lg:inline">User</span>
+        </NavLink>
+
+        {/* Financial Section */}
+        <div className="text-xs font-semibold text-blue-300 px-4 py-2 uppercase tracking-wide">Keuangan</div>
+
         <NavLink
           to="/admin/transfer"
           className={({ isActive }) =>
@@ -95,6 +114,7 @@ const Sidebar = () => {
           <span>💸</span>
           <span className="menu-text hidden lg:inline">Transfer</span>
         </NavLink>
+
         <NavLink
           to="/admin/transfer/daftartransaksi"
           className={({ isActive }) =>
